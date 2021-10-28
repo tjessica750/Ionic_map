@@ -1,0 +1,7 @@
+{
+  "name": "movil_ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
