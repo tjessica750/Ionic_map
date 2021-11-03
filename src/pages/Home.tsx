@@ -3,20 +3,17 @@ import { ellipsisVertical, ellipsisHorizontal } from "ionicons/icons"
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 import { useState } from 'react';
-import Login from './Login';
+
 import Map from './Map';
-import SideMenu from '../components/SideMenu'
 
 const Home: React.FC = () => {
-
-  const [user, setUser] = useState()
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <SideMenu />
+            
           </IonButtons>
           <IonButtons slot="primary">
             <IonButton>
@@ -32,7 +29,6 @@ const Home: React.FC = () => {
             <IonTitle size="large">Blank</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {user ? <Map  /> : <Login setUser= {setUser}/>}
       </IonContent>
     </IonPage>
   );

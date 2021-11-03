@@ -1,10 +1,13 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonInput, IonItem, IonItemDivider, IonLabel, IonTitle } from '@ionic/react'
+import { useIonToast, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonInput, IonItem, IonItemDivider, IonLabel, IonTitle, useIonLoading, IonFooter } from '@ionic/react'
 import {React ,  useState} from 'react'
 import {getAuth , createUserWithEmailAndPassword , signInWithEmailAndPassword} from "firebase/auth"
 
 const  Login = (props) => {
     const initialEmail = ''
     const initialPassword = ''
+
+    const [ toast, closeToast ] = useIonToast();
+    const [ loading, setLoading ] = useIonLoading();
 
     const [action , setAction] = useState(false)
 
@@ -13,35 +16,59 @@ const  Login = (props) => {
     const [error, setError] = useState('')
     
 
+    const handleClick = () => {
+        setAction(!action);
+    }
+
+
     const submit_form = (e) => {
         e.preventDefault()
         const auth = getAuth()
         if(action){
+            loading({ message : "Espere por favor"})
             createUserWithEmailAndPassword(auth , email , password)
             .then((userCredential) => {
-                console.log("Usuario Registrado: "+userCredential.user)
+                setLoading()
+                toast("Usuario registrado con exito", 2000)
                 setEmail(initialEmail)
                 setPassword(initialPassword)
+                setAction(false)
+                setError('')
             }).catch((error) => {
+                setLoading()
                 setError(error.message)
             })
         }else{
+            loading({ message : "Espere por favor"})
             signInWithEmailAndPassword(auth , email, password)
             .then((userCredential) => {
+                setLoading();
                 props.setUser(userCredential)
             }).catch((error) => {
-                setError(error.message)
+                switch (error.code) {
+                    case "auth/user-not-found":
+                        setError("Usuario no encontrado")
+                        break;
+                    case "auth/invalid-email":
+                        setError("Email invalido")
+                        break;
+                    case "auth/wrong-password":
+                        setError("Contraseña incorrecta")
+                        break;
+                    default:
+                        break;
+                }
+                setLoading();
             })
         }
-       
-        
+             
     }
     return (
-        
+
         <IonCard>
             <IonCardHeader className="ion-text-center">
-                <h3>Acceder</h3>
-                <IonCardSubtitle>Entra con tu Cuenta</IonCardSubtitle>
+                <h3>{action ? "Registrate" : "Acceder" }</h3>
+                <IonCardSubtitle>{action ? "Coloca un correo y crea una contraseña" : "Ingresa con tu correo y contraseña"}</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
                 <form onSubmit={submit_form}>
@@ -57,11 +84,14 @@ const  Login = (props) => {
                     <br/>
                     <IonButton type="submit" expand="block">{action ? "REGISTRARSE" : "INICIAR SESION"}</IonButton>
                 </form>
-                <br/>
                 <IonLabel color="danger">{error}</IonLabel>
-                <IonButton fill="outline">{action ? "INICIAR SESION" : "REGISTRARSE"}</IonButton>
+                <br/>
+                <br />
+                <IonButton fill="outline" onClick={handleClick}>{action ? "INICIAR SESION" : "REGISTRARSE"}</IonButton>
             </IonCardContent>
         </IonCard>
+        
+
         
     )
 }

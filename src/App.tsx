@@ -1,7 +1,8 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { map, chatbubbleEllipsesOutline, exitOutline } from 'ionicons/icons'
+import { IonApp, IonRouterOutlet, IonIcon, IonLabel, IonTabBar, IonTabButton, IonTabs } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -21,18 +22,41 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import Login from './pages/Login';
+import Map from './pages/Map';
+import Chat from './pages/Chat';
 
 const App: React.FC = () => (
+
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
+      <IonTabs>
+        <IonRouterOutlet>
+          <Route exact path="/tab1">
+            <Map />
+          </Route>
+          <Route exact path="/tab2">
+            <Chat />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/tab1" />
+          </Route>
+        </IonRouterOutlet>
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="tab1" href="/tab1">
+            <IonIcon icon={map} />
+            <IonLabel>Mapa</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="tab2" href="/tab2">
+            <IonIcon icon={chatbubbleEllipsesOutline} />
+            <IonLabel>Chat</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="tab3">
+            <IonIcon icon={exitOutline} />
+            <IonLabel>Salir</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
     </IonReactRouter>
   </IonApp>
 );

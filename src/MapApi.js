@@ -1,35 +1,52 @@
-import {Map ,GoogleApiWrapper, Marker} from "google-maps-react"
-import React from "react";
+import { Map, GoogleApiWrapper, Marker } from "google-maps-react"
+import { React, useEffect, useState } from "react";
 
-export class MapContainer extends React.Component {
+const MapContainer = (props) => {
 
-    componentDidMount(){
+    const [userlat, setUserLat ] = useState('')
+    const [userlng, setUserLng ] = useState('')
 
+    const containerStyle = {
+        width: '100%',
+        height: '100%'
     }
 
-    render() {
-        const containerStyle = { 
-            width: '100%',
-            height: '100%'
-        }
-        return(
-            <Map 
-                google={this.props.google} 
-                zoom={14} 
-                containerStyle={containerStyle}
-            >
-                <Marker onClick={this.onMarkerClick}
-                    name={'Current Location'} />
-                
-            </Map>
-        );
-    }
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(function(position){
+            setUserLat(position.coords.latitude)
+            setUserLng(position.coords.longitude)
+        })
+    }, []);
+   
+    
+
+    return (
+        <Map
+            google={props.google}
+            zoom={14}
+            containerStyle={containerStyle}
+            center={{
+                lat: userlat,
+                lng: userlng
+            }}
+        >
+            <Marker
+                name={"ubicacion-actual"}
+                position={{
+                    lat: userlat,
+                    lng: userlng
+                }}
+            />
+
+        </Map>
+    )
+
 }
 
 export default GoogleApiWrapper(
     (props) => ({
         apiKey: ('AIzaSyAcW191qRfL43wIU0uqzMB-lBFjYepUCko')
     })
-    
+
 )(MapContainer)
 
