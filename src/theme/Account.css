@@ -1,0 +1,52 @@
+.top{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding-bottom: 1rem;
+    padding-top: 4rem;
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+    
+}
+
+
+.user-avatar {
+    position: relative;
+    width: 7.5rem; 
+    height: 7.5rem; 
+    border-radius: 10px !important;
+    z-index: 2;
+  
+}
+
+.user-avatar img {
+    border: 3px  #ffffff;
+    
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: absolute;
+    padding: 8rem;
+    margin-top: -1.5rem;
+    z-index: 2;
+    
+}
+
+.cardheader{
+    margin-bottom: -15px;
+}
+
+.menu-content{
+    margin: 15px;
+    margin-top: -70px;
+    border-radius: 10px 10px 10px 10px  !important;
+}
+
+.cardContent{
+    padding: 0px ;
+    padding-bottom: 5px;
+}
